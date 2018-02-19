@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// import logo from '../../assets/logo.svg';
+import Authenticated from '../Authenticated';
+
 import '../../styles/routes/root.css';
 
 class Root extends Component {
@@ -30,7 +31,7 @@ class Root extends Component {
           </div>
         ) : (
           <Switch>
-            <Route path='/' component={() => <div />} />
+            <Route path='/' component={Authenticated} />
           </Switch>
         )}
       </div>
