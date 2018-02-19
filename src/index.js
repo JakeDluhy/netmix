@@ -4,7 +4,7 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
-import registerServiceWorker from './utils/registerServiceWorker';
+import registerServiceWorker from './utils/register-service-worker';
 
 import { store, history } from './store';
 
