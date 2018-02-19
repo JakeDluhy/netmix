@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import logo from './assets/logo.svg';
-import './App.css';
 
-class App extends Component {
+import logo from '../../assets/logo.svg';
+import '../../styles/routes/root.css';
+
+class Root extends Component {
   render() {
     return (
       <div className='text-center'>
@@ -18,4 +19,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Root;
