@@ -27,7 +27,6 @@ type Props = {
 
 type State = {
   pageNumber: number,
-  isAtEnd: boolean,
 };
 
 /**
@@ -42,7 +41,7 @@ class MoviesIndexRoute extends Component<Props, State> {
     super(props);
 
     // Initialize the state for the first page, assuming that content has not ended
-    this.state = { pageNumber: 1, isAtEnd: false };
+    this.state = { pageNumber: 1 };
   }
 
   componentDidMount() {
@@ -52,12 +51,6 @@ class MoviesIndexRoute extends Component<Props, State> {
     // Bind the scroll handler, making sure that the listener is throttled
     this.onScrollHandler = _.throttle(this.onScroll.bind(this), 300);
     window.addEventListener('scroll', this.onScrollHandler);
-  }
-
-  componentWillReceiveProps(props) {
-    // If the updated number of movies is equal to the current number of movies, we know the
-    // last request returned nothing
-    if(this.props.movies.length === props.movies.length) this.setState({ isAtEnd: true });
   }
 
   componentWillUnmount() {
@@ -75,8 +68,7 @@ class MoviesIndexRoute extends Component<Props, State> {
   }
 
   loadPage() {
-    // Don't do anything if the last request didn't give us anything
-    if(this.state.isAtEnd) return;
+    // TODO: Find a way to correctly mark when the user is at the end of infinite scrolling
 
     // Use the internal state for page number, and always load 8 new items
     const query = `?_page=${this.state.pageNumber}&_limit=${PAGE_SIZE}`;
