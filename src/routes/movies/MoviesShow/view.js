@@ -1,6 +1,60 @@
 // @flow
 import React from 'react';
+import _ from 'lodash';
 
-export default () => (
-  <div>Show</div>
-);
+import Close from '../../../components/icons/Close';
+import Star from '../../../components/icons/Star';
+
+import type { Movie } from '../../../../flow/movie-types';
+
+type Props = {
+  movie: Movie,
+  goBack: func,
+};
+
+export default (props: Props) => {
+  const releaseDate = new Date(props.movie.releaseDate)
+  .toLocaleDateString('en-us', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  return [
+    <div key='A' className='flex justify-between items-center'>
+      <div>
+        <h2 className='text-xl lg:text-4xl font-medium'>{props.movie.title}</h2>
+
+        <div className='h-8'>
+          {_.range(4).map((n) => (
+            <Star key={n} isFilled={n < props.movie.rating} size={{ all: 4, lg: 8 }} />
+          ))}
+        </div>
+      </div>
+
+      <a
+        className='block rounded-full h-8 lg:h-12 w-8 lg:w-12 p8 cursor-pointer hover:bg-grey-light'
+        onClick={props.goBack}
+      >
+        <Close />
+      </a>
+    </div>,
+
+    <div key='B' className='pt-4 flex flex-col md:flex-row'>
+      <div className='sm:w-full md:w-1/4 pb-8 md:pr-8'>
+        <img src={props.movie.posterUrl} alt={props.movie.title} />
+
+        <div className='text-center text-sm font-bold text-grey-darkest'>Released on {releaseDate}</div>
+      </div>
+
+      <div className='sm:w-full md:w-3/4 md:pl-8'>
+        <div className='relative' style={{ paddingBottom: '56.24%', height: 0 }}>
+          <iframe
+            className='absolute pin-t pin-l w-full h-full'
+            title={props.movie.title}
+            src={`https://www.youtube.com/embed/${props.movie.trailerYoutubeId}`}
+            frameBorder="0"
+            allowFullScreen
+          >
+          </iframe>
+        </div>
+      </div>
+    </div>
+  ];
+};
