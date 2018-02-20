@@ -1,6 +1,14 @@
 // @flow
 import React from 'react';
 
-export default () => (
-  <div>Index</div>
+import MoviesLayout from '../../../components/partials/MoviesLayout';
+
+import type { Movie } from '../../../../flow/movie-types';
+
+type Props = {
+  movies: array<Movie>
+};
+
+export default (props: Props) => (
+  <MoviesLayout movies={props.movies} />
 );
