@@ -1,9 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../../src/routes/Root';
+import { shallow } from 'enzyme';
+
+import { Switch } from 'react-router-dom';
+
+import Root from '../../src/routes/Root/view';
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  const wrapper = shallow(<Root />);
+  expect(wrapper.find(Switch).length).toBe(1);
 });
