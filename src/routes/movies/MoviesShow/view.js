@@ -1,9 +1,8 @@
 // @flow
 import React from 'react';
-import _ from 'lodash';
 
+import RatingDisplay from '../../../components/partials/RatingDisplay';
 import Close from '../../../components/icons/Close';
-import Star from '../../../components/icons/Star';
 
 import type { Movie } from '../../../../flow/movie-types';
 
@@ -21,11 +20,7 @@ export default (props: Props) => {
       <div>
         <h2 className='text-xl lg:text-4xl font-medium'>{props.movie.title}</h2>
 
-        <div className='h-8'>
-          {_.range(4).map((n) => (
-            <Star key={n} isFilled={n < props.movie.rating} size={{ all: 4, lg: 8 }} />
-          ))}
-        </div>
+        <RatingDisplay rating={props.movie.rating} starSize={{ all: 4, lg: 8 }} />
       </div>
 
       <a

@@ -1,74 +1,84 @@
+// @flow
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import build from 'redux-object';
+import _ from 'lodash';
+
+import { fetchMoviesReq } from '../../../actions';
 
 import MoviesIndex from './view';
 
-const mapStateToProps = () => ({
-  movies: [
-    {
-      "id":1,
-      "title":"'71",
-      "rating":2,
-      "releaseDate":"1999-02-09T07:52:02Z",
-      "trailerYoutubeId":"fAn8HVDj57U",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/15/b70-7814"
-    },
-    {
-      "id":2,
-      "title":"Respiro",
-      "rating":2,
-      "releaseDate":"2015-04-12T14:15:09Z",
-      "trailerYoutubeId":"hIuJj_hstUc",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/13/A70-6912"
-    },
-    {
-      "id":3,
-      "title":"Bomb It,",
-      "rating":3,
-      "releaseDate":"1992-08-15T16:44:11Z",
-      "trailerYoutubeId":"SltlF6c9Fko",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/13/MPW-6725"
-    },
-    {
-      "id":4,
-      "title":"Unholy Three, The",
-      "rating":2,
-      "releaseDate":"1993-06-13T15:16:32Z",
-      "trailerYoutubeId":"tuPlMfsonBw",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/13/MPW-6724"
-    },
-    {
-      "id":5,
-      "title":"Invasion of the Bee Girls,",
-      "rating":3,
-      "releaseDate":"1988-01-02T12:01:22Z",
-      "trailerYoutubeId":"nHtyDsoF4IY",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/2/b70-1191"
-    },
-    {
-      "id":6,
-      "title":"Tootsie,",
-      "rating":3,
-      "releaseDate":"2001-09-04T19:27:58Z",
-      "trailerYoutubeId":"YiqZcykdaV0",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/37/MPW-18721"
-    },
-    {
-      "id":7,
-      "title":"Virgin Territory,",
-      "rating":1,
-      "releaseDate":"2008-02-25T03:47:31Z",
-      "trailerYoutubeId":"vPP6aIw1vgY",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/7/b70-3959"
-    },
-    {
-      "id":8,
-      "title":"Doomsday Prophecy,",
-      "rating":2,
-      "releaseDate":"2013-01-19T16:56:50Z",
-      "trailerYoutubeId":"WEZ79CiMYD4",
-      "posterUrl":"https://www.movieposter.com/posters/archive/main/38/MPW-19409"
-    }
-  ],
+const mapStateToProps = ({ entities }) => ({
+  movies: build(entities, 'movies') || [],
 });
 
-export default connect(mapStateToProps)(MoviesIndex);
+const mapDispatchToProps = (d) => bindActionCreators({ fetchMoviesReq }, d);
+
+const PAGE_SIZE = 8;
+const PAGE_BOTTOM_THRESHOLD = 100;
+
+type Props = {
+  fetchMoviesReq: func,
+};
+
+/**
+ * This route implements a semi-naive version of infinite scrolling. It is naive because
+ * it wouldn't big up on new updates if they were added later (not suitable for a feed, for
+ * instance)
+ */
+class MoviesIndexRoute extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    // Initialize the state for the first page, assuming that content has not ended
+    this.state = { pageNumber: 1, isAtEnd: false };
+  }
+
+  componentDidMount() {
+    // Initially load a page on load
+    this.loadPage();
+
+    // Bind the scroll handler, making sure that the listener is throttled
+    this.onScrollHandler = _.throttle(this.onScroll.bind(this), 300);
+    window.addEventListener('scroll', this.onScrollHandler);
+  }
+
+  componentWillReceiveProps(props) {
+    // If the updated number of movies is equal to the current number of movies, we know the
+    // last request returned nothing
+    if(this.props.movies.length === props.movies.length) this.setState({ isAtEnd: true });
+  }
+
+  componentWillUnmount() {
+    // Remove the scroll listener on unmount
+    window.removeEventListener('scroll', this.onScrollHandler);
+  }
+
+  onScroll() {
+    // innerHeight + pageOffset is the height of the screen. Adding PAGE_BOTTOM_THRESHOLD gives us
+    // the chance to trigger the request in advance
+    const screenBottomLoc = (window.innerHeight + window.pageYOffset + PAGE_BOTTOM_THRESHOLD);
+    if(screenBottomLoc >= document.body.offsetHeight) this.loadPage();
+  }
+
+  loadPage() {
+    // Don't do anything if the last request didn't give us anything
+    if(this.state.isAtEnd) return;
+
+    // Use the internal state for page number, and always load 8 new items
+    const query = `?_page=${this.state.pageNumber}&_limit=${PAGE_SIZE}`;
+
+    // We can pass the query string to the action, which will make the fetch request
+    this.props.fetchMoviesReq({ query });
+    // Increase the page number
+    this.setState(({ pageNumber }) => ({ pageNumber: pageNumber + 1 }));
+  }
+
+  render() {
+    const passedProps = _.omit(this.props, 'fetchMoviesReq');
+    return <MoviesIndex {...passedProps} />
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesIndexRoute);

@@ -14,6 +14,7 @@ export function* fetchEntity({ entity }, { payload = {} }) {
 
   try {
     const resPayload = yield fetchWrapper.get(path).then(normalizePayload);
+
     yield put({
       type:    a[`FETCH_${upperSnaked}_RES`],
       payload: resPayload,

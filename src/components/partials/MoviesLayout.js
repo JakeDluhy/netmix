@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import RatingDisplay from './RatingDisplay';
+
 import type { Movie } from '../../../flow/movie-types';
 
 type Props = {
@@ -22,6 +24,9 @@ export default (props: Props) => {
 
           <div className='no-underline'>
             <div className='text-lg text-grey-darkest font-bold'>{movie.title}</div>
+
+            <RatingDisplay rating={movie.rating} starSize={{ all: 4 }} />
+
             <div className='text-sm font-medium text-grey-darkest'>
               Released {new Date(movie.releaseDate).toLocaleDateString()}
             </div>

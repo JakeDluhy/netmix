@@ -70,4 +70,7 @@ export const buildWhereObjs = (entities, type, whereClause) => (
  * @return {Object}     The mapped response
  */
 export const normalizePayload = (res) => res.json()
-.then((json) => ({ entities: normalize(json) }));
+.then((json) => {
+  console.log(json);
+  return ({ entities: normalize(json) });
+});
