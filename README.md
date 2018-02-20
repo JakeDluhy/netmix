@@ -14,4 +14,6 @@ I added Enzyme on top of Jest to make testing the Components easier, and I wrote
 ## Running the app
 Clone the repo, enter the directory, and then run `npm install`. After that completes, you will need to terminal tabs open. In one run `npm run server` (to start the dev api server) and in the other run `npm start` (to start the webpack dev server). Visit http://localhost:8080 in order to see the running app.
 
-To run tests, after installing dependencies run `npm test`.
+Run `npm test` for tests.
+
+Run `npm run flow` for flow checking.

@@ -8,7 +8,7 @@ import type { Movie } from '../../../../flow/movie-types';
 
 type Props = {
   movie: Movie,
-  goBack: func,
+  goBack: Function,
 };
 
 export default (props: Props) => {

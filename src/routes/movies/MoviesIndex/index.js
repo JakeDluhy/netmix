@@ -9,6 +9,8 @@ import { fetchMoviesReq } from '../../../actions';
 
 import MoviesIndex from './view';
 
+import type { Movie } from '../../../../flow/movie-types';
+
 const mapStateToProps = ({ entities }) => ({
   movies: build(entities, 'movies') || [],
 });
@@ -19,7 +21,13 @@ const PAGE_SIZE = 8;
 const PAGE_BOTTOM_THRESHOLD = 100;
 
 type Props = {
-  fetchMoviesReq: func,
+  movies: Array<Movie>,
+  fetchMoviesReq: Function,
+};
+
+type State = {
+  pageNumber: number,
+  isAtEnd: boolean,
 };
 
 /**
@@ -27,7 +35,9 @@ type Props = {
  * it wouldn't big up on new updates if they were added later (not suitable for a feed, for
  * instance)
  */
-class MoviesIndexRoute extends Component<Props> {
+class MoviesIndexRoute extends Component<Props, State> {
+  onScrollHandler: Function;
+
   constructor(props) {
     super(props);
 
@@ -56,10 +66,12 @@ class MoviesIndexRoute extends Component<Props> {
   }
 
   onScroll() {
+    const offsetHeight = document.body ? document.body.offsetHeight : 0;
+
     // innerHeight + pageOffset is the height of the screen. Adding PAGE_BOTTOM_THRESHOLD gives us
     // the chance to trigger the request in advance
     const screenBottomLoc = (window.innerHeight + window.pageYOffset + PAGE_BOTTOM_THRESHOLD);
-    if(screenBottomLoc >= document.body.offsetHeight) this.loadPage();
+    if(screenBottomLoc >= offsetHeight) this.loadPage();
   }
 
   loadPage() {

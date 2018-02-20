@@ -6,7 +6,7 @@ import Star from '../icons/Star';
 
 type Props = {
   rating: number,
-  starSize: object,
+  starSize: Object,
 };
 
 export default (props: Props) => (

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { getSizeClasses } from '../../utils/icon-helpers';
 
 type Props = {
-  size: number,
+  size: Object,
   isFilled: boolean,
 };
 

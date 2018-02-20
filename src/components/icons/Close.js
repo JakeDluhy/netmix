@@ -4,7 +4,7 @@ import React from 'react';
 import { getSizeClasses } from '../../utils/icon-helpers';
 
 type Props = {
-  size: object,
+  size: Object,
 };
 
 const Close = (props: Props) => {

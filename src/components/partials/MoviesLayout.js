@@ -7,7 +7,7 @@ import RatingDisplay from './RatingDisplay';
 import type { Movie } from '../../../flow/movie-types';
 
 type Props = {
-  movies?: array<Movie>,
+  movies: Array<Movie>,
 };
 
 const MoviesLayout = (props: Props) => {

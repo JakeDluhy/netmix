@@ -6,14 +6,22 @@ import Authenticated from '../Authenticated';
 
 import '../../styles/routes/root.css';
 
-class Root extends Component {
-  constructor(props) {
+type Props = {};
+
+type State = {
+  hasError: boolean,
+  error?: string,
+  info?: string,
+};
+
+class Root extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = { hasError: false };
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch(error: string, info: string) {
     this.setState({
       hasError: true,
       error,

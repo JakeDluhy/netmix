@@ -6,6 +6,7 @@ import _ from 'lodash';
 import MoviesLayout from '../../../components/partials/MoviesLayout';
 
 import type { Movie } from '../../../../flow/movie-types';
+import type { DropdownObject } from '../../../../flow/vendor-types';
 
 const DROPDOWN_OPTIONS = [
   { label: 'Rating - Best First', value: 'rating:desc' },
@@ -17,18 +18,24 @@ const DROPDOWN_OPTIONS = [
 ];
 
 type Props = {
-  movies: array<Movie>,
-  loadSortedMovies: func,
+  movies: Array<Movie>,
+  loadSortedMovies: Function,
 };
 
-export default class MoviesIndex extends Component<Props> {
-  constructor(props) {
+type State = {
+  sort?: string,
+  order?: string,
+  dropdownObj?: DropdownObject,
+};
+
+export default class MoviesIndex extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {};
   }
 
-  setSortOption(dropdownObj) {
+  setSortOption(dropdownObj: DropdownObject) {
     const [sort, order] = dropdownObj.value.split(':');
 
     this.setState({ sort, order, dropdownObj });

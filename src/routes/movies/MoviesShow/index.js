@@ -18,6 +18,11 @@ const mapStateToProps = ({ entities }, { match }) => ({
 
 const mapDispatchToProps = (d) => bindActionCreators({ findMovieReq, goBack }, d);
 
+type Props = {
+  movieId: number,
+  findMovieReq: Function,
+};
+
 class MoviesShowRoute extends Component<Props> {
   componentDidMount() {
     this.props.findMovieReq({ id: this.props.movieId });
