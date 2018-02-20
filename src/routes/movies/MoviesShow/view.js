@@ -23,12 +23,12 @@ export default (props: Props) => {
         <RatingDisplay rating={props.movie.rating} starSize={{ all: 4, md: 8 }} />
       </div>
 
-      <a
+      <div
         className='block rounded-full h-8 md:h-12 w-8 md:w-12 p8 cursor-pointer hover:bg-grey-light'
         onClick={props.goBack}
       >
         <Close />
-      </a>
+      </div>
     </div>,
 
     <div key='B' className='pt-4 flex flex-col md:flex-row'>
