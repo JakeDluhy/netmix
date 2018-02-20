@@ -18,13 +18,13 @@ export default (props: Props) => {
   return [
     <div key='A' className='flex justify-between items-center'>
       <div>
-        <h2 className='text-xl lg:text-4xl font-medium'>{props.movie.title}</h2>
+        <h2 className='text-xl md:text-4xl font-medium'>{props.movie.title}</h2>
 
-        <RatingDisplay rating={props.movie.rating} starSize={{ all: 4, lg: 8 }} />
+        <RatingDisplay rating={props.movie.rating} starSize={{ all: 4, md: 8 }} />
       </div>
 
       <a
-        className='block rounded-full h-8 lg:h-12 w-8 lg:w-12 p8 cursor-pointer hover:bg-grey-light'
+        className='block rounded-full h-8 md:h-12 w-8 md:w-12 p8 cursor-pointer hover:bg-grey-light'
         onClick={props.goBack}
       >
         <Close />
@@ -33,7 +33,7 @@ export default (props: Props) => {
 
     <div key='B' className='pt-4 flex flex-col md:flex-row'>
       <div className='sm:w-full md:w-1/4 pb-8 md:pr-8'>
-        <img src={props.movie.posterUrl} alt={props.movie.title} />
+        <img className='block mx-auto' src={props.movie.posterUrl} alt={props.movie.title} />
 
         <div className='text-center text-sm font-bold text-grey-darkest'>Released on {releaseDate}</div>
       </div>

@@ -10,7 +10,7 @@ const getDataType = (url) => {
   const noQuery = url.split('?')[0];
 
   return _.last(
-    noQuery.split('/').filter((part) => !_.isNumber(part))
+    noQuery.split('/').filter((part) => isNaN(Number(part)))
   );
 }
 

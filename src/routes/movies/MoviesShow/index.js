@@ -1,20 +1,32 @@
+// @flow
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { goBack } from 'react-router-redux';
+import _ from 'lodash';
+
+import { buildObj } from '../../../utils/entities-helpers';
+
+import { findMovieReq } from '../../../actions';
 
 import MoviesShow from './view';
 
-const mapStateToProps = () => ({
-  movie: {
-    "id":1,
-    "title":"Invasion of the Bee Girls",
-    "rating": 2,
-    "releaseDate":"1999-02-09T07:52:02Z",
-    "trailerYoutubeId":"fAn8HVDj57U",
-    "posterUrl":"https://www.movieposter.com/posters/archive/main/15/b70-7814"
-  },
+const mapStateToProps = ({ entities }, { match }) => ({
+  movieId: match.params.id,
+  movie:   buildObj(entities, 'movies', match.params.id),
 });
 
-const mapDispatchToProps = (d) => bindActionCreators({ goBack }, d);
+const mapDispatchToProps = (d) => bindActionCreators({ findMovieReq, goBack }, d);
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoviesShow);
+class MoviesShowRoute extends Component<Props> {
+  componentDidMount() {
+    this.props.findMovieReq({ id: this.props.movieId });
+  }
+
+  render() {
+    const passedProps = _.omit(this.props, 'findMovieReq');
+    return <MoviesShow {...passedProps} />
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviesShowRoute);
