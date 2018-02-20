@@ -75,9 +75,19 @@ class MoviesIndexRoute extends Component<Props> {
     this.setState(({ pageNumber }) => ({ pageNumber: pageNumber + 1 }));
   }
 
+  loadSortedMovies(sort, order) {
+    // Reset the pageNumber to 1
+    this.setState({ pageNumber: 1 });
+
+    // With a new sort selection, reset to the first page
+    const query = `?_page=1&_limit=${PAGE_SIZE}&_sort=${sort}&_order=${order}`;
+
+    this.props.fetchMoviesReq({ query });
+  }
+
   render() {
     const passedProps = _.omit(this.props, 'fetchMoviesReq');
-    return <MoviesIndex {...passedProps} />
+    return <MoviesIndex {...passedProps} loadSortedMovies={this.loadSortedMovies.bind(this)} />
   }
 }
 
