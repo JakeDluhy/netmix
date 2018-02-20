@@ -5,7 +5,6 @@ import { Switch, Route } from 'react-router-dom';
 import Header from '../../components/partials/Header';
 
 import MoviesIndex from '../movies/MoviesIndex';
-import MoviesSearch from '../movies/MoviesSearch';
 import MoviesShow from '../movies/MoviesShow';
 
 export default () => [
@@ -14,7 +13,6 @@ export default () => [
   <div key='B' className='max-w-xl mx-auto p-4 lg:px-0'>
     <Switch key='B'>
       <Route exact path='/' component={MoviesIndex} />
-      <Route exact path='/movies/search' component={MoviesSearch} />
       <Route exact path='/movies/:id' component={MoviesShow} />
     </Switch>
   </div>
